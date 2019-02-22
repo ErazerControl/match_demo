@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
 ]
-
+# 将这里改为bot代码的目录
+PROGAME_URL = 'C:/Users/xfhan/Desktop/game_vs/'
 ASGI_APPLICATION = 'demo.routing.application'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -128,4 +129,3 @@ STATIC_URL = '/static/'
 STATIC_ROOT=''
 STATICFILES_DIRS = ( os.path.join('static'), )
 
-PROGAME_URL = 'C:/Users/xfhan/Desktop/game_vs/'
