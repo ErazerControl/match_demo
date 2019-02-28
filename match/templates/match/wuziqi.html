@@ -1,0 +1,39 @@
+<!-- chat/templates/chat/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+        {% load staticfiles %}
+    <meta charset="utf-8"/>
+    <title>五子棋</title>
+    <link href={% static "wuziqi/chessStyle.css" %} rel="stylesheet" type="text/css"/>
+</head>
+<body>
+    选择要执行的代码<br/>
+    黑子：<input id="room-name-input" type="text" size="50" value="bot1.py"/><br/>
+    白子：<input id="room-name-input2" type="text" size="50" value="bot2.py"/><br/>
+    <input id="room-name-submit" type="button" value="对战"/>
+    <canvas id="chess" width="450px" height="450px"></canvas>
+    <script>
+        document.querySelector('#room-name-input').focus();
+        document.querySelector('#room-name-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#room-name-submit').click();
+            }
+        };
+
+        document.querySelector('#room-name-submit').onclick = function(e) {
+            var gamename="wuziqi"
+            var prog1 = document.querySelector('#room-name-input').value;
+            var prog2 = document.querySelector('#room-name-input2').value;
+            players=(prog1+" "+prog2).split(' ')
+           // window.location.pathname = '/chat/' + roomName + '/';
+            chatSocket.send(JSON.stringify({
+            'message': gamename+" "+prog1+" "+prog2
+        }));
+        };
+    </script>
+</body>
+<script src={% static "wuziqi/chess.js" %}></script>
+<script src={% static "wuziqi/play.js" %}></script>
+<script>startGame()</script>
+</html>
