@@ -57,10 +57,31 @@ chatSocket.onmessage = function(e) {
     var message = data['message'];
     obj=JSON.parse(message)
     console.log(message)
-    if(obj.hasOwnProperty("winner")){
-        WINNER=obj["winner"]
+    if(obj.hasOwnProperty("errors")){
+        mes="出错了:"
+        if(obj["errors"].hasOwnProperty("0")==false){
+            game.snack.direction=DirectionEnum[directions[obj["0"]]]
+            game.snack.move(game)
+        }
+        else{
+            mes+="玩家0"+obj["errors"]["0"]
+        }
+        if(obj["errors"].hasOwnProperty("1")==false){
+            game.snack1.direction=DirectionEnum[directions[obj["1"]]]
+            game.snack1.move(game)
+        }
+        else{
+            mes+="玩家1"+obj["errors"]["1"]
+        }
+        if(obj.hasOwnProperty("winner")){
+            mes+="胜者为："+obj["winner"]
+        }
+        else{
+            mes+="平局"
+        }
+        setTimeout("alert(mes)",1000)
     }
-    if(obj.hasOwnProperty("obstacle")){
+    else if(obj.hasOwnProperty("obstacle")){
         FOOD_Y=obj["obstacle"][0]["x"]
         FOOD_X=obj["obstacle"][0]["y"]
         X_LEN=obj["height"]+2
@@ -72,10 +93,14 @@ chatSocket.onmessage = function(e) {
         game.init();
     }
     else{
+        if(obj.hasOwnProperty("winner")){
+            WINNER=obj["winner"]
+        }
     game.snack.direction=DirectionEnum[directions[obj["0"]]]
     game.snack.move(game)
     game.snack1.direction=DirectionEnum[directions[obj["1"]]]
     game.snack1.move(game)
+    
     } 
     
 

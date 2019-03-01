@@ -76,7 +76,7 @@ class ChatConsumer(WebsocketConsumer):
                         display["errors"]=dict(extra,**display["errors"])
                     else:
                         display["errors"]=extra
-                    display["winner"]=int(item)
+                    display["winner"]=1-int(item)
                 else:
                     stdout=str(stdout, encoding = "utf-8")
                     print("打印返回结果：",end='')
@@ -90,18 +90,19 @@ class ChatConsumer(WebsocketConsumer):
                     display=dict(display,**temp_display)
             logs.append(rep)
             print("打印返回前端的信息：",end='')
+            for item in scores:
+            #1表示胜利 0表示输
+                if scores[item]==1:
+                    finish=END_CODE
+                    winner+=1
+            if winner==players:
+                del display["winner"]
             self.send(text_data=json.dumps({
             'message': json.dumps(display)
             }))
             print("-------------------------------------------")
-            for item in scores:
-                #1表示胜利 0表示输
-                if scores[item]==1:
-                    finish=END_CODE
-                    winner+=1
+          
             if finish==END_CODE:
-                if winner==players:
-                    del display["winner"]
                 req={"memory":21,"time":12,"output":{"command":"finish","display":display,"content":scores}}
                 logs.append(req)
                 break
